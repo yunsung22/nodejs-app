@@ -15,7 +15,7 @@ pipeline {
 	stage('docker hub push') {
             steps {
                 sh '''
- 		   docker login -u yunsung22 -p dy455412!
+ 		   docker login -u yunsung22 -p password
                    docker push yunsung22/nodejsapp
 		'''
             }
