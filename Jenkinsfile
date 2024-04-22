@@ -1,24 +1,28 @@
 pipeline {
-    agent any
+    agent { label 'agent' }
 
     stages {
-        stage('pre cleanup') {
-            steps {
-                sh 'docker compose down'
-            }
-        }
-        
         stage('git scm update') {
             steps {
                 git url: 'https://github.com/yunsung22/nodejs-app.git', branch: 'main'
             }
         }
-
-        stage('docker compose & deploy') {
+        stage('docker build & deploy') {
+            steps {
+		sh 'IMAGE_NAME=yunsung22/nodejsapp docker compose build'
+            }
+        }
+	stage('docker hub push') {
             steps {
                 sh '''
-                docker compose up --build -d
-                '''
+ 		   docker login -u yunsung22 -p dy455412!
+                   docker push yunsung22/nodejsapp
+		'''
+            }
+        }
+	stage('microk8s run pod') {
+            steps {
+                sh ' microk8s kubectl run app1 --image=yunsung22/nodejsapp '
             }
         }
     }
