@@ -31,7 +31,7 @@ services:
     - pgadmin-data:/var/lib/pgadmin
 
   web:
-    image: "{IMAGE_NAME}"
+    image: "${IMAGE_NAME}"
     build: web
     ports:
     - 3001:3001
